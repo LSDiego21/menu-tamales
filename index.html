@@ -1,39 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú Digital | Los Padrinos & El Rey</title>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recetario Maestro | Los Padrinos & El Rey</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="background-decor"></div>
-    
-    <header>
-        <div class="logo-container">
-            <h1>Tamales Los Padrinos</h1>
-            <span class="divider"></span>
-            <h2>Caldos de Pavo El Rey</h2>
-        </div>
-        <p class="subtitle">Sabor auténtico de Cancún directamente a tu mesa</p>
-    </header>
+    <div class="main-content">
+        <header class="hero">
+            <div class="hero-overlay">
+                <span class="location">Cancún, México</span>
+                <h1>El Gran Recetario</h1>
+                <p>Tamales Los Padrinos & Caldos de Pavo El Rey</p>
+            </div>
+        </header>
 
-    <main class="container">
-        <section class="menu-section">
-            <div id="menu-grid" class="grid">
-                </div>
+        <section class="shelf">
+            <div id="grid" class="recipe-grid"></div>
         </section>
-    </main>
 
-    <footer>
-        <p>Visítanos en Av. Talleres con Torcasita, Cancún</p>
-        <div class="api-badge">
-            <span>API:</span>
-            <code>https://lsdiego2108.pythonanywhere.com/api/recetas</code>
+        <div id="recipe-modal" class="modal">
+            <div class="modal-parchment">
+                <span class="close-btn">&times;</span>
+                <h2 id="modal-title"></h2>
+                <div class="content-flex">
+                    <div class="ing-list">
+                        <h3>Ingredientes</h3><ul id="modal-ingredients"></ul>
+                    </div>
+                    <div class="step-list">
+                        <h3>Preparación</h3><ol id="modal-steps"></ol>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
 
+        <footer class="footer">
+            <p>Ubicados sobre la Av. Talleres con Torcasita, frente a la gasolinera Oktan.</p>
+            <div class="api-footer">API: <span>https://lsdiego2108.pythonanywhere.com/api/recetas</span></div>
+        </footer>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
