@@ -15,68 +15,47 @@
         }
 
         header {
-            height: 350px;
+            height: 300px;
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&q=80&w=1500');
             background-size: cover; background-attachment: fixed;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             color: white; text-align: center; border-bottom: 8px solid var(--oro);
         }
 
-        header h1 { font-family: 'Playfair Display', serif; font-size: 4rem; margin: 0; text-shadow: 3px 3px 10px rgba(0,0,0,0.5); }
+        header h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin: 0; text-shadow: 2px 2px 8px rgba(0,0,0,0.5); }
 
-        .container { max-width: 1200px; margin: -60px auto 60px; padding: 0 20px; }
-
-        /* EL BOTÓN DE PDF MUY VISIBLE */
-        .btn-imprimir {
-            display: block; margin: 0 auto 40px auto;
-            background-color: var(--oro); color: #111;
-            padding: 15px 35px; font-size: 1.2rem; font-family: 'Poppins', sans-serif; font-weight: bold;
-            border: none; border-radius: 50px; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: all 0.3s ease;
-        }
-        .btn-imprimir:hover { transform: scale(1.05); background-color: #f1c40f; }
+        .container { max-width: 1200px; margin: -40px auto 60px; padding: 0 20px; }
 
         .recipe-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
 
         .card {
             background: var(--papel) url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-            padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            cursor: pointer; transition: all 0.4s ease; border: 1px solid rgba(0,0,0,0.1);
+            padding: 30px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(0,0,0,0.1);
         }
 
-        .card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.7); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
         .card h2 { font-family: 'Playfair Display', serif; color: var(--rojo); margin-top: 0; }
 
         .modal {
             display: none; position: fixed; z-index: 1000; inset: 0;
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(5px);
             align-items: center; justify-content: center; padding: 20px;
         }
 
         .modal-content {
             background: #fff url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-            width: 100%; max-width: 700px; max-height: 85vh; border-radius: 20px;
-            position: relative; box-shadow: 0 0 50px #000;
-            overflow-y: auto; animation: modalPop 0.4s ease;
-            border-left: 15px solid var(--verde); padding: 40px;
+            width: 100%; max-width: 700px; max-height: 85vh; border-radius: 10px;
+            position: relative; box-shadow: 0 0 30px #000;
+            overflow-y: auto; animation: modalPop 0.3s ease;
+            border-left: 10px solid var(--verde); padding: 40px;
         }
 
-        @keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .close-btn { position: absolute; top: 15px; right: 25px; font-size: 40px; cursor: pointer; color: var(--rojo); }
+        @keyframes modalPop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .close-btn { position: absolute; top: 15px; right: 25px; font-size: 35px; cursor: pointer; color: var(--rojo); }
 
-        footer { background: #111; color: #888; padding: 60px 20px; text-align: center; }
-        .api-link { display: inline-block; margin-top: 15px; color: var(--oro); font-family: monospace; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 5px; }
-
-        /* CONFIGURACIÓN PARA EL PDF - IMPRESIÓN LIMPIA */
-        @media print {
-            body { background: white; color: black; }
-            header { height: auto; background: none; color: black; border: none; text-shadow: none; padding: 20px 0; }
-            header h1 { color: black; text-shadow: none; }
-            .btn-imprimir, footer, .modal { display: none !important; }
-            .card { box-shadow: none; border: 1px solid #aaa; page-break-inside: avoid; transform: none !important; background: white; }
-            .card h2 { color: black; }
-            b { display: none; } /* Oculta el texto de "ver elaboración" al imprimir */
-        }
+        footer { background: #111; color: #888; padding: 40px 20px; text-align: center; }
+        .api-link { display: inline-block; margin-top: 10px; color: var(--oro); font-family: monospace; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 5px; }
     </style>
 </head>
 <body>
@@ -87,20 +66,18 @@
 </header>
 
 <div class="container">
-    <button class="btn-imprimir" onclick="window.print()">🖨️ Guardar Documento como PDF</button>
-    
     <div id="grid-recetas" class="recipe-grid"></div>
 </div>
 
 <div id="modal-receta" class="modal">
     <div class="modal-content">
         <span class="close-btn" id="cerrar-modal">&times;</span>
-        <h2 id="modal-titulo" style="font-family:'Playfair Display'; font-size: 2.2rem; color: var(--rojo);"></h2>
+        <h2 id="modal-titulo" style="font-family:'Playfair Display'; font-size: 2rem; color: var(--rojo);"></h2>
         <div id="modal-body">
             <h3 style="color:var(--verde)">Ingredientes</h3>
-            <ul id="modal-ingredientes" style="line-height: 1.8;"></ul>
+            <ul id="modal-ingredientes" style="line-height: 1.6;"></ul>
             <h3 style="color:var(--verde)">Pasos de Elaboración</h3>
-            <ol id="modal-pasos" style="line-height: 1.8;"></ol>
+            <ol id="modal-pasos" style="line-height: 1.6;"></ol>
         </div>
     </div>
 </div>
@@ -111,56 +88,65 @@
 </footer>
 
 <script>
-    const RECETAS_DETALLES = {
-        1: {
-            ing: ["1kg de masa de maíz", "Hojas de plátano asadas", "Pollo deshebrado", "Tomatillos verdes y chile dulce", "Manteca de cerdo"],
-            pasos: ["Asar las hojas para que sean flexibles.", "Batir masa con manteca hasta que flote en agua.", "Hacer salsa verde cuidando que no pique.", "Rellenar, envolver en hoja de plátano y cocer al vapor 90 min."]
-        },
-        2: {
-            ing: ["Masa de maíz", "Hoja de plátano", "Pollo cocido", "Mole artesanal", "Caldo de pollo"],
-            pasos: ["Mezclar el mole con el caldo.", "Integrar el pollo al mole.", "Colocar masa en la hoja de plátano.", "Añadir el guiso, cerrar y cocer al vapor."]
-        },
-        3: {
-            ing: ["Masa suave", "Hoja de plátano", "Chile poblano en tiras", "Queso de hebra", "Cebolla blanca"],
-            pasos: ["Tatemar y pelar los chiles.", "Saltear tiras de chile con cebolla.", "Colocar masa y rajas con queso en la hoja.", "Cerrar y cocer al vapor."]
-        },
-        4: {
-            ing: ["Pavo fresco en piezas", "Cebolla asada", "Ajo", "Hierbabuena", "Recado blanco"],
-            pasos: ["Cocer pavo con ajo y cebolla.", "Diluir recado blanco y añadir al caldo.", "Finalizar con hierbabuena fresca.", "Servir bien caliente."]
-        },
-        5: {
-            ing: ["Tortillas de maíz", "Frijol negro refrito", "Carne deshebrada (pavo o pollo)", "Cebolla morada curtida"],
-            pasos: ["Abrir la tortilla por la mitad.", "Rellenar con el frijol negro.", "Freír hasta dorar y que quede crujiente.", "Añadir carne y cebolla morada."]
-        },
-        6: {
-            ing: ["Masa de maíz", "Carne deshebrada", "Lechuga picada", "Aguacate", "Tomate en rodajas"],
-            pasos: ["Formar tortillas a mano.", "Freír ligeramente para que inflen y queden suaves.", "Colocar la carne y los vegetales frescos encima."]
-        },
-        7: {
-            ing: ["Masa de maíz", "Carne deshebrada para relleno", "Aceite para freír", "Salsa de tomate tradicional"],
-            pasos: ["Extender la masa en forma circular.", "Colocar el relleno y cerrar doblando por la mitad.", "Freír en aceite caliente hasta dorar.", "Servir bañadas en salsa de tomate."]
-        },
-        8: {
-            ing: ["1 litro de Leche", "4 Mazapanes de cacahuate", "Canela en rama", "2 cucharadas de fécula de maíz"],
-            pasos: ["Calentar la leche con la rama de canela.", "Licuar los mazapanes con un poco de leche fría.", "Integrar todo y espesar a fuego medio sin dejar de mover."]
-        },
-        9: {
-            ing: ["1 litro de Leche", "1 paquete de Galletas María", "Canela en rama", "Leche condensada al gusto"],
-            pasos: ["Licuar las galletas con una parte de la leche.", "Poner a hervir el resto de la leche con canela.", "Integrar la mezcla licuada y endulzar.", "Remover constantemente hasta que espese."]
-        },
-        10: {
-            ing: ["1 litro de Agua o Leche", "1 tableta de chocolate de mesa", "150g de masa de maíz", "Piloncillo al gusto"],
-            pasos: ["Disolver el chocolate y el piloncillo en el líquido caliente.", "Diluir la masa en un poco de agua fría y colar.", "Añadir la masa al líquido hirviendo.", "Hervir a fuego lento removiendo hasta obtener el espesor deseado."]
-        }
-    };
-
     const API_URL = 'https://lsdiego2108.pythonanywhere.com/api/recetas';
     let apiData = [];
+
+    // Función inteligente que asigna detalles leyendo el nombre, evitando cruces de IDs
+    function obtenerDetalles(nombre) {
+        const n = nombre.toLowerCase();
+        
+        if (n.includes("verde")) return {
+            ing: ["1kg de masa de maíz", "Hojas de plátano asadas", "Pollo deshebrado", "Tomatillos verdes y chile dulce", "Manteca de cerdo"],
+            pasos: ["Asar las hojas para que sean flexibles.", "Batir masa con manteca hasta que flote en agua.", "Hacer salsa verde cuidando que no pique.", "Rellenar, envolver en hoja de plátano y cocer al vapor 90 min."]
+        };
+        if (n.includes("mole")) return {
+            ing: ["Masa de maíz", "Hoja de plátano", "Pollo cocido", "Mole artesanal", "Caldo de pollo"],
+            pasos: ["Mezclar el mole con el caldo.", "Integrar el pollo al mole.", "Colocar masa en la hoja de plátano.", "Añadir el guiso, cerrar y cocer al vapor."]
+        };
+        if (n.includes("rajas")) return {
+            ing: ["Masa suave", "Hoja de plátano", "Chile poblano en tiras", "Queso de hebra", "Cebolla blanca"],
+            pasos: ["Tatemar y pelar los chiles.", "Saltear tiras de chile con cebolla.", "Colocar masa y rajas con queso en la hoja.", "Cerrar y cocer al vapor."]
+        };
+        if (n.includes("caldo")) return {
+            ing: ["Pavo fresco en piezas", "Cebolla asada", "Ajo", "Hierbabuena", "Recado blanco"],
+            pasos: ["Cocer pavo con ajo y cebolla.", "Diluir recado blanco y añadir al caldo.", "Finalizar con hierbabuena fresca.", "Servir bien caliente."]
+        };
+        if (n.includes("panucho")) return {
+            ing: ["Tortillas de maíz", "Frijol negro refrito", "Carne deshebrada (pavo o pollo)", "Cebolla morada curtida"],
+            pasos: ["Abrir la tortilla por la mitad.", "Rellenar con el frijol negro.", "Freír hasta dorar y que quede crujiente.", "Añadir carne y cebolla morada."]
+        };
+        if (n.includes("salbute")) return {
+            ing: ["Masa de maíz", "Carne deshebrada", "Lechuga picada", "Aguacate", "Tomate en rodajas"],
+            pasos: ["Formar tortillas a mano.", "Freír ligeramente para que inflen y queden suaves.", "Colocar la carne y los vegetales frescos encima."]
+        };
+        if (n.includes("empanada")) return {
+            ing: ["Masa de maíz", "Carne deshebrada para relleno", "Aceite para freír", "Salsa de tomate tradicional"],
+            pasos: ["Extender la masa en forma circular.", "Colocar el relleno y cerrar doblando por la mitad.", "Freír en aceite caliente hasta dorar.", "Servir bañadas en salsa de tomate."]
+        };
+        if (n.includes("mazapán") || n.includes("mazapan")) return {
+            ing: ["1 litro de Leche", "4 Mazapanes de cacahuate", "Canela en rama", "2 cucharadas de fécula de maíz"],
+            pasos: ["Calentar la leche con la rama de canela.", "Licuar los mazapanes con un poco de leche fría.", "Integrar todo y espesar a fuego medio sin dejar de mover."]
+        };
+        if (n.includes("galleta")) return {
+            ing: ["1 litro de Leche", "1 paquete de Galletas María", "Canela en rama", "Leche condensada al gusto"],
+            pasos: ["Licuar las galletas con una parte de la leche.", "Poner a hervir el resto de la leche con canela.", "Integrar la mezcla licuada y endulzar.", "Remover constantemente hasta que espese."]
+        };
+        if (n.includes("champurrado")) return {
+            ing: ["1 litro de Agua o Leche", "1 tableta de chocolate de mesa", "150g de masa de maíz", "Piloncillo al gusto"],
+            pasos: ["Disolver el chocolate y el piloncillo en el líquido caliente.", "Diluir la masa en un poco de agua fría y colar.", "Añadir la masa al líquido hirviendo.", "Hervir a fuego lento removiendo hasta obtener el espesor deseado."]
+        };
+        
+        return { ing: ["Ingredientes detallados en proceso..."], pasos: ["Pasos en proceso..."] };
+    }
 
     async function cargar() {
         try {
             const res = await fetch(API_URL);
-            apiData = await res.json();
+            let rawData = await res.json();
+            
+            // Ordenar los datos por ID para que salgan en el orden correcto siempre
+            apiData = rawData.sort((a, b) => a.id - b.id);
+            
             const grid = document.getElementById('grid-recetas');
             
             grid.innerHTML = apiData.map(r => `
@@ -177,9 +163,9 @@
     }
 
     function abrirReceta(id) {
-        const det = RECETAS_DETALLES[id];
         const r = apiData.find(x => x.id === id);
-        if (det && r) {
+        if (r) {
+            const det = obtenerDetalles(r.nombre);
             document.getElementById('modal-titulo').innerText = r.nombre;
             document.getElementById('modal-ingredientes').innerHTML = det.ing.map(i => `<li>${i}</li>`).join('');
             document.getElementById('modal-pasos').innerHTML = det.pasos.map(p => `<li>${p}</li>`).join('');
@@ -189,6 +175,7 @@
 
     document.getElementById('cerrar-modal').onclick = () => document.getElementById('modal-receta').style.display = 'none';
     window.onclick = (e) => { if (e.target.id == 'modal-receta') document.getElementById('modal-receta').style.display = 'none'; };
+    
     cargar();
 </script>
 </body>
