@@ -3,130 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gran Recetario Mexicano</title>
+    <title>Recetario Tradicional Mexicano</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --rojo: #a93226; --verde: #1e8449; --oro: #d4ac0d; }
-        
+        :root {
+            --mex-red: #b22222;
+            --mex-green: #2d5a27;
+            --gold: #d4af37;
+            --paper: #fdf5e6;
+        }
+
         body {
-            margin: 0; font-family: 'Segoe UI', sans-serif;
-            background: #2c1e1a url('https://www.transparenttextures.com/patterns/dark-wood.png');
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #1a1a1a url('https://www.transparenttextures.com/patterns/mexican-blanket.png'); /* Textura colorida de fondo */
             color: #333;
+            overflow-x: hidden;
         }
 
+        /* Encabezado con enfoque y movimiento */
         header {
+            height: 400px;
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&q=80&w=1500');
-            background-size: cover; color: white; text-align: center; padding: 80px 20px;
-            border-bottom: 5px solid var(--oro);
+            background-size: cover;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            border-bottom: 8px solid var(--gold);
         }
 
-        .container { max-width: 1200px; margin: -50px auto 50px; padding: 0 20px; }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin: 0;
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+            animation: fadeInDown 1s ease;
+        }
 
-        /* Tarjetas con efecto de enfoque */
+        /* Contenedor de Recetas */
+        .container {
+            max-width: 1200px;
+            margin: -60px auto 60px;
+            padding: 0 20px;
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* Tarjetas con texturas y efectos de enfoque */
         .card {
-            background: #fdf5e6 url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-            padding: 25px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transition: all 0.3s ease; cursor: pointer; border: 1px solid #ddd;
+            background: var(--paper) url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
         }
-        .card:hover { transform: scale(1.05); filter: brightness(1.1); box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
-        .card h2 { color: var(--rojo); margin-top: 0; }
 
-        /* EL RECUADRO EMERGENTE (MODAL) */
+        .card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+        }
+
+        .card h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--mex-red);
+            margin-top: 0;
+        }
+
+        /* RECUADRO EMERGENTE (MODAL) */
         .modal {
-            display: none; position: fixed; z-index: 1000; inset: 0;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
-            align-items: center; justify-content: center;
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
         .modal-content {
-            background: #fff url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-            width: 90%; max-width: 600px; padding: 40px; border-radius: 5px;
-            position: relative; box-shadow: 0 0 50px #000;
-            border-left: 15px solid var(--verde); animation: slideIn 0.4s ease;
+            background: #fff url('https://www.transparenttextures.com/patterns/p6.png');
+            width: 100%;
+            max-width: 800px;
+            max-height: 80vh;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+            overflow-y: auto;
+            animation: modalPop 0.4s ease;
+            border-left: 15px solid var(--mex-green);
+            padding: 50px;
         }
 
-        @keyframes slideIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
 
-        .close { position: absolute; top: 10px; right: 20px; font-size: 35px; cursor: pointer; color: var(--rojo); }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            cursor: pointer;
+            color: var(--mex-red);
+        }
 
-        footer { background: #111; color: #888; text-align: center; padding: 40px; margin-top: 50px; }
-        .endpoint { color: var(--oro); font-family: monospace; display: block; margin-top: 10px; }
+        /* Footer con Endpoint */
+        footer {
+            background: #111;
+            color: #888;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .api-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--gold);
+            font-family: monospace;
+            background: rgba(255,255,255,0.05);
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>EL GRAN RECETARIO MEXICANO</h1>
-    <p>Sabores auténticos, pasos tradicionales</p>
+    <h1>RECETARIO MAESTRO</h1>
+    <p>Sabores Tradicionales de Cancún</p>
 </header>
 
 <div class="container">
-    <div id="grid-recetas" class="grid">
+    <div id="grid-recetas" class="recipe-grid">
         </div>
 </div>
 
 <div id="modal-receta" class="modal">
     <div class="modal-content">
-        <span class="close" id="cerrar-btn">&times;</span>
-        <h2 id="modal-titulo" style="color:var(--rojo)"></h2>
-        <hr>
-        <h3>Ingredientes</h3>
-        <ul id="modal-ingredientes"></ul>
-        <h3>Pasos de Elaboración</h3>
-        <ol id="modal-pasos"></ol>
+        <span class="close-btn" id="cerrar-modal">&times;</span>
+        <h2 id="modal-titulo" style="font-family:'Playfair Display'; font-size: 2.5rem; color: var(--mex-red);"></h2>
+        <div id="modal-info">
+            <h3 style="color:var(--mex-green)">Ingredientes</h3>
+            <ul id="modal-ingredientes" style="line-height: 1.8;"></ul>
+            <h3 style="color:var(--mex-green)">Modo de Elaboración</h3>
+            <ol id="modal-pasos" style="line-height: 1.8;"></ol>
+        </div>
     </div>
 </div>
 
 <footer>
-    <p>Ubicación de referencia: Cancún, Av. Talleres con Torcasita.</p>
-    <span>API:</span>
-    <code class="endpoint">https://lsdiego2108.pythonanywhere.com/api/recetas</code>
+    <p>Ubicación de referencia: Av. Talleres con Torcasita, Cancún</p>
+    <div class="api-link">API: https://lsdiego2108.pythonanywhere.com/api/recetas</div>
 </footer>
 
 <script>
-    const API_URL = 'https://lsdiego2108.pythonanywhere.com/api/recetas';
-    let recetasGlobales = [];
+    // ESTA ES LA BASE DE DATOS EXTENSA QUE SE MOSTRARÁ EN EL RECUADRO
+    const RECETARIO_EXTENSO = {
+        "Tamales de Pollo en Salsa Verde": {
+            ingredientes: [
+                "1kg de masa de maíz",
+                "Hojas de plátano asadas (obligatorio para el sabor)",
+                "Pechuga de pollo deshebrada",
+                "Tomatillos verdes y chile dulce (la salsa verde no pica)",
+                "Manteca de cerdo y sal al gusto"
+            ],
+            pasos: [
+                "Preparar la masa batiendo con manteca hasta que esté esponjosa.",
+                "Cocer los tomatillos con el chile dulce y licuar para la salsa verde.",
+                "Limpiar y cortar las hojas de plátano en rectángulos.",
+                "Extender una porción de masa en la hoja, añadir pollo y salsa verde.",
+                "Doblar la hoja de plátano cuidadosamente y cocer al vapor por 90 minutos."
+            ]
+        },
+        "Tamales de Mole con Pollo": {
+            ingredientes: ["Masa de maíz", "Hojas de plátano", "Pollo en mole artesanal", "Manteca"],
+            pasos: ["Preparar el mole con anticipación.", "Mezclar el pollo cocido con el mole.", "Armar el tamal en la hoja de plátano.", "Cocer al vapor."]
+        },
+        "Caldo de Pavo Tradicional": {
+            ingredientes: ["Piezas de pavo seleccionado", "Cebolla asada", "Ajo", "Hierbabuena", "Recado blanco"],
+            pasos: ["Hervir el pavo con los ajos y la cebolla asada.", "Diluir el recado blanco e integrar al caldo.", "Añadir la hierbabuena al final para aroma.", "Servir caliente."]
+        },
+        "Atole de Mazapán": {
+            ingredientes: ["Leche entera", "Mazapanes de cacahuate", "Canela en rama", "Fécula de maíz"],
+            pasos: ["Infusionar la leche con canela.", "Licuar los mazapanes con un poco de leche.", "Mezclar todo y espesar al fuego. (Especial de los viernes)"]
+        },
+        "Atole de Galleta María": {
+            ingredientes: ["Leche", "Galletas María", "Canela", "Leche condensada"],
+            pasos: ["Licuar las galletas con la leche.", "Hervir con la canela hasta espesar. (Disponible los martes)"]
+        }
+    };
 
-    async function cargarRecetas() {
+    const API_URL = 'https://lsdiego2108.pythonanywhere.com/api/recetas';
+    let recetasAPI = [];
+
+    async function cargarAPI() {
         try {
-            const respuesta = await fetch(API_URL);
-            recetasGlobales = await respuesta.json();
+            const res = await fetch(API_URL);
+            recetasAPI = await res.json();
             const grid = document.getElementById('grid-recetas');
             
-            grid.innerHTML = recetasGlobales.map(r => `
-                <div class="card" onclick="abrirModal(${r.id})">
-                    <small style="color:var(--verde); font-weight:bold;">${r.categoria}</small>
+            grid.innerHTML = recetasAPI.map(r => `
+                <div class="card" onclick="verReceta('${r.nombre}')">
+                    <small style="color:var(--mex-green); font-weight:bold;">${r.categoria}</small>
                     <h2>${r.nombre}</h2>
                     <p>${r.descripcion}</p>
-                    <strong style="color:var(--rojo)">Hacer clic para ver receta completa →</strong>
+                    <span style="color:var(--mex-red); font-weight:bold;">Ver Elaboración →</span>
                 </div>
             `).join('');
-        } catch (error) {
-            console.error("Error al cargar la API:", error);
+        } catch (e) { console.error("Error conectando a la API"); }
+    }
+
+    function verReceta(nombre) {
+        const detalles = RECETARIO_EXTENSO[nombre];
+        
+        if (detalles) {
+            document.getElementById('modal-titulo').innerText = nombre;
+            document.getElementById('modal-ingredientes').innerHTML = detalles.ingredientes.map(i => `<li>${i}</li>`).join('');
+            document.getElementById('modal-pasos').innerHTML = detalles.pasos.map(p => `<li>${p}</li>`).join('');
+            document.getElementById('modal-receta').style.display = 'flex';
+        } else {
+            alert("Los detalles de esta receta se están redactando...");
         }
     }
 
-    function abrirModal(id) {
-        const receta = recetasGlobales.find(r => r.id === id);
-        if (!receta) return;
-
-        document.getElementById('modal-titulo').innerText = receta.nombre;
-        
-        // Llenar ingredientes
-        const listaIng = document.getElementById('modal-ingredientes');
-        listaIng.innerHTML = receta.ingredientes.map(i => `<li>${i}</li>`).join('');
-        
-        // Llenar pasos
-        const listaPasos = document.getElementById('modal-pasos');
-        listaPasos.innerHTML = receta.pasos.map(p => `<li>${p}</li>`).join('');
-
-        // Mostrar el modal
-        document.getElementById('modal-receta').style.display = 'flex';
-    }
-
-    // Lógica para cerrar
-    document.getElementById('cerrar-btn').onclick = () => {
+    document.getElementById('cerrar-modal').onclick = () => {
         document.getElementById('modal-receta').style.display = 'none';
     };
 
@@ -136,7 +257,7 @@
         }
     };
 
-    cargarRecetas();
+    cargarAPI();
 </script>
 
 </body>
