@@ -4,41 +4,140 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gran Recetario Mexicano</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root { --rojo: #a93226; --verde: #1e8449; --oro: #d4ac0d; }
+        
+        body {
+            margin: 0; font-family: 'Segoe UI', sans-serif;
+            background: #2c1e1a url('https://www.transparenttextures.com/patterns/dark-wood.png');
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&q=80&w=1500');
+            background-size: cover; color: white; text-align: center; padding: 80px 20px;
+            border-bottom: 5px solid var(--oro);
+        }
+
+        .container { max-width: 1200px; margin: -50px auto 50px; padding: 0 20px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+        /* Tarjetas con efecto de enfoque */
+        .card {
+            background: #fdf5e6 url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+            padding: 25px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease; cursor: pointer; border: 1px solid #ddd;
+        }
+        .card:hover { transform: scale(1.05); filter: brightness(1.1); box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
+        .card h2 { color: var(--rojo); margin-top: 0; }
+
+        /* EL RECUADRO EMERGENTE (MODAL) */
+        .modal {
+            display: none; position: fixed; z-index: 1000; inset: 0;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            align-items: center; justify-content: center;
+        }
+
+        .modal-content {
+            background: #fff url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+            width: 90%; max-width: 600px; padding: 40px; border-radius: 5px;
+            position: relative; box-shadow: 0 0 50px #000;
+            border-left: 15px solid var(--verde); animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .close { position: absolute; top: 10px; right: 20px; font-size: 35px; cursor: pointer; color: var(--rojo); }
+
+        footer { background: #111; color: #888; text-align: center; padding: 40px; margin-top: 50px; }
+        .endpoint { color: var(--oro); font-family: monospace; display: block; margin-top: 10px; }
+    </style>
 </head>
 <body>
-    <div class="overlay-background"></div>
-    
-    <header class="main-header">
-        <h1>RECETARIO MEXICANO</h1>
-        <p>Descubre el arte de la cocina tradicional</p>
-    </header>
 
-    <main id="galeria" class="recipe-container"></main>
+<header>
+    <h1>EL GRAN RECETARIO MEXICANO</h1>
+    <p>Sabores auténticos, pasos tradicionales</p>
+</header>
 
-    <div id="recipe-modal" class="modal-backdrop">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-scroll-area">
-                <h2 id="modal-name"></h2>
-                <div class="recipe-details">
-                    <section>
-                        <h3>Ingredientes</h3>
-                        <ul id="modal-ingredients"></ul>
-                    </section>
-                    <section>
-                        <h3>Pasos de Elaboración</h3>
-                        <ol id="modal-steps"></ol>
-                    </section>
-                </div>
-            </div>
+<div class="container">
+    <div id="grid-recetas" class="grid">
         </div>
+</div>
+
+<div id="modal-receta" class="modal">
+    <div class="modal-content">
+        <span class="close" id="cerrar-btn">&times;</span>
+        <h2 id="modal-titulo" style="color:var(--rojo)"></h2>
+        <hr>
+        <h3>Ingredientes</h3>
+        <ul id="modal-ingredientes"></ul>
+        <h3>Pasos de Elaboración</h3>
+        <ol id="modal-pasos"></ol>
     </div>
+</div>
 
-    <footer class="main-footer">
-        <p>API: <strong>https://lsdiego2108.pythonanywhere.com/api/recetas</strong></p>
-    </footer>
+<footer>
+    <p>Ubicación de referencia: Cancún, Av. Talleres con Torcasita.</p>
+    <span>API:</span>
+    <code class="endpoint">https://lsdiego2108.pythonanywhere.com/api/recetas</code>
+</footer>
 
-    <script src="script.js"></script>
+<script>
+    const API_URL = 'https://lsdiego2108.pythonanywhere.com/api/recetas';
+    let recetasGlobales = [];
+
+    async function cargarRecetas() {
+        try {
+            const respuesta = await fetch(API_URL);
+            recetasGlobales = await respuesta.json();
+            const grid = document.getElementById('grid-recetas');
+            
+            grid.innerHTML = recetasGlobales.map(r => `
+                <div class="card" onclick="abrirModal(${r.id})">
+                    <small style="color:var(--verde); font-weight:bold;">${r.categoria}</small>
+                    <h2>${r.nombre}</h2>
+                    <p>${r.descripcion}</p>
+                    <strong style="color:var(--rojo)">Hacer clic para ver receta completa →</strong>
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error("Error al cargar la API:", error);
+        }
+    }
+
+    function abrirModal(id) {
+        const receta = recetasGlobales.find(r => r.id === id);
+        if (!receta) return;
+
+        document.getElementById('modal-titulo').innerText = receta.nombre;
+        
+        // Llenar ingredientes
+        const listaIng = document.getElementById('modal-ingredientes');
+        listaIng.innerHTML = receta.ingredientes.map(i => `<li>${i}</li>`).join('');
+        
+        // Llenar pasos
+        const listaPasos = document.getElementById('modal-pasos');
+        listaPasos.innerHTML = receta.pasos.map(p => `<li>${p}</li>`).join('');
+
+        // Mostrar el modal
+        document.getElementById('modal-receta').style.display = 'flex';
+    }
+
+    // Lógica para cerrar
+    document.getElementById('cerrar-btn').onclick = () => {
+        document.getElementById('modal-receta').style.display = 'none';
+    };
+
+    window.onclick = (event) => {
+        if (event.target == document.getElementById('modal-receta')) {
+            document.getElementById('modal-receta').style.display = 'none';
+        }
+    };
+
+    cargarRecetas();
+</script>
+
 </body>
 </html>
