@@ -10,7 +10,7 @@
 
         body {
             margin: 0; font-family: 'Poppins', sans-serif;
-            background: #1a1a1a url('https://www.transparenttextures.com/patterns/mexican-blanket.png'); /* Fondo colorido tradicional */
+            background: #1a1a1a url('https://www.transparenttextures.com/patterns/mexican-blanket.png'); 
             color: #333; overflow-x: hidden;
         }
 
@@ -28,7 +28,6 @@
 
         .recipe-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
 
-        /* Tarjetas con Enfoque y Textura */
         .card {
             background: var(--papel) url('https://www.transparenttextures.com/patterns/paper-fibers.png');
             padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -40,7 +39,6 @@
 
         .card h2 { font-family: 'Playfair Display', serif; color: var(--rojo); margin-top: 0; }
 
-        /* RECUADRO EMERGENTE (MODAL) - CORREGIDO */
         .modal {
             display: none; position: fixed; z-index: 1000; inset: 0;
             background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
@@ -67,7 +65,7 @@
 
 <header>
     <h1>RECETARIO MAESTRO</h1>
-    <p>La esencia de la cocina tradicional mexicana</p>
+    <p>Conocimiento y preservación de la cocina tradicional mexicana</p>
 </header>
 
 <div class="container">
@@ -88,16 +86,16 @@
 </div>
 
 <footer>
-    <p>Tradición y sabor en cada página</p>
+    <p>Divulgación del arte culinario</p>
     <div class="api-link">API: https://lsdiego2108.pythonanywhere.com/api/recetas</div>
 </footer>
 
 <script>
-    // BASE DE DATOS EXTENSA - MAPEADA POR ID
+    // Base de datos extensa y puramente educativa (IDs 1 al 10)
     const RECETAS_DETALLES = {
         1: {
             ing: ["1kg de masa de maíz", "Hojas de plátano asadas", "Pollo deshebrado", "Tomatillos verdes y chile dulce", "Manteca de cerdo"],
-            pasos: ["Asar las hojas para que sean flexibles.", "Batir masa con manteca hasta que flote en agua.", "Hacer salsa verde (el de verde no pica).", "Rellenar, envolver en hoja de plátano y cocer al vapor."]
+            pasos: ["Asar las hojas para que sean flexibles.", "Batir masa con manteca hasta que flote en agua.", "Hacer salsa verde cuidando que no pique.", "Rellenar, envolver en hoja de plátano y cocer al vapor 90 min."]
         },
         2: {
             ing: ["Masa de maíz", "Hoja de plátano", "Pollo cocido", "Mole artesanal", "Caldo de pollo"],
@@ -108,35 +106,66 @@
             pasos: ["Tatemar y pelar los chiles.", "Saltear tiras de chile con cebolla.", "Colocar masa y rajas con queso en la hoja.", "Cerrar y cocer al vapor."]
         },
         4: {
-            ing: ["Masa", "Frijol espelón", "Pollo", "Hoja de plátano", "Achiote"],
-            pasos: ["Mezclar masa con frijol espelón.", "Sazonar pollo con achiote.", "Formar el tamal y cocer al vapor."]
+            ing: ["Pavo fresco en piezas", "Cebolla asada", "Ajo", "Hierbabuena", "Recado blanco"],
+            pasos: ["Cocer pavo con ajo y cebolla.", "Diluir recado blanco y añadir al caldo.", "Finalizar con hierbabuena fresca.", "Servir bien caliente."]
         },
         5: {
-            ing: ["Masa fina", "Pollo", "Salsa roja", "Hoja de plátano"],
-            pasos: ["Extender masa muy delgada.", "Poner pollo y salsa.", "Doblar en hoja de plátano y cocer al vapor."]
+            ing: ["Tortillas de maíz", "Frijol negro refrito", "Carne deshebrada (pavo o pollo)", "Cebolla morada curtida"],
+            pasos: ["Abrir la tortilla por la mitad.", "Rellenar con el frijol negro.", "Freír hasta dorar y que quede crujiente.", "Añadir carne y cebolla morada."]
         },
         6: {
-            ing: ["Pavo fresco", "Cebolla asada", "Ajo", "Hierbabuena", "Recado blanco"],
-            pasos: ["Cocer pavo con ajo y cebolla.", "Diluir recado blanco y añadir.", "Finalizar con hierbabuena fresca.", "Servir bien caliente."]
+            ing: ["Masa de maíz", "Carne deshebrada", "Lechuga picada", "Aguacate", "Tomate en rodajas"],
+            pasos: ["Formar tortillas a mano.", "Freír ligeramente para que inflen y queden suaves.", "Colocar la carne y los vegetales frescos encima."]
+        },
+        7: {
+            ing: ["Masa de maíz", "Carne deshebrada para relleno", "Aceite para freír", "Salsa de tomate tradicional"],
+            pasos: ["Extender la masa en forma circular.", "Colocar el relleno y cerrar doblando por la mitad.", "Freír en aceite caliente hasta dorar.", "Servir bañadas en salsa de tomate."]
+        },
+        8: {
+            ing: ["1 litro de Leche", "4 Mazapanes de cacahuate", "Canela en rama", "2 cucharadas de fécula de maíz"],
+            pasos: ["Calentar la leche con la rama de canela.", "Licuar los mazapanes con un poco de leche fría.", "Integrar todo y espesar a fuego medio sin dejar de mover."]
+        },
+        9: {
+            ing: ["1 litro de Leche", "1 paquete de Galletas María", "Canela en rama", "Leche condensada al gusto"],
+            pasos: ["Licuar las galletas con una parte de la leche.", "Poner a hervir el resto de la leche con canela.", "Integrar la mezcla licuada y endulzar.", "Remover constantemente hasta que espese."]
+        },
+        10: {
+            ing: ["1 litro de Agua o Leche", "1 tableta de chocolate de mesa", "150g de masa de maíz", "Piloncillo al gusto"],
+            pasos: ["Disolver el chocolate y el piloncillo en el líquido caliente.", "Diluir la masa en un poco de agua fría y colar.", "Añadir la masa al líquido hirviendo.", "Hervir a fuego lento removiendo hasta obtener el espesor deseado."]
         }
     };
 
     const API_URL = 'https://lsdiego2108.pythonanywhere.com/api/recetas';
     let apiData = [];
 
+    // Función para limpiar frases comerciales o de días de la semana
+    function limpiarDescripcion(texto) {
+        if (!texto) return "";
+        return texto
+            .replace(/La estrella de los viernes\.?\s?/gi, '')
+            .replace(/Especial de los viernes\.?\s?/gi, '')
+            .replace(/Disponible los martes\.?\s?/gi, '')
+            .replace(/Disponible lunes y jueves\.?\s?/gi, '')
+            .replace(/Disponible los miércoles\.?\s?/gi, '');
+    }
+
     async function cargar() {
-        const res = await fetch(API_URL);
-        apiData = await res.json();
-        const grid = document.getElementById('grid-recetas');
-        
-        grid.innerHTML = apiData.map(r => `
-            <div class="card" onclick="abrirReceta(${r.id})">
-                <small style="color:var(--verde); font-weight:bold; text-transform:uppercase;">${r.categoria}</small>
-                <h2>${r.nombre}</h2>
-                <p>${r.descripcion}</p>
-                <b style="color:var(--rojo)">Ver Elaboración Completa →</b>
-            </div>
-        `).join('');
+        try {
+            const res = await fetch(API_URL);
+            apiData = await res.json();
+            const grid = document.getElementById('grid-recetas');
+            
+            grid.innerHTML = apiData.map(r => `
+                <div class="card" onclick="abrirReceta(${r.id})">
+                    <small style="color:var(--verde); font-weight:bold; text-transform:uppercase;">${r.categoria}</small>
+                    <h2>${r.nombre}</h2>
+                    <p>${limpiarDescripcion(r.descripcion)}</p>
+                    <b style="color:var(--rojo)">Ver Elaboración Completa →</b>
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error("Error al cargar recetas:", error);
+        }
     }
 
     function abrirReceta(id) {
