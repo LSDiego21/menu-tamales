@@ -91,7 +91,7 @@
     const API_URL = 'https://lsdiego2108.pythonanywhere.com/api/recetas';
     let apiData = [];
 
-    // Función inteligente que asigna detalles leyendo el nombre, evitando cruces de IDs
+    // Función que asigna detalles leyendo el nombre
     function obtenerDetalles(nombre) {
         const n = nombre.toLowerCase();
         
@@ -135,8 +135,34 @@
             ing: ["1 litro de Agua o Leche", "1 tableta de chocolate de mesa", "150g de masa de maíz", "Piloncillo al gusto"],
             pasos: ["Disolver el chocolate y el piloncillo en el líquido caliente.", "Diluir la masa en un poco de agua fría y colar.", "Añadir la masa al líquido hirviendo.", "Hervir a fuego lento removiendo hasta obtener el espesor deseado."]
         };
+        if (n.includes("arroz con leche")) return {
+            ing: ["1 taza de arroz", "Leche entera", "Canela en rama", "Leche condensada"],
+            pasos: ["Cocer el arroz con agua y canela.", "Añadir las leches y hervir a fuego lento.", "Remover constantemente para que no se pegue."]
+        };
         
         return { ing: ["Ingredientes detallados en proceso..."], pasos: ["Pasos en proceso..."] };
+    }
+
+    // Filtro para cambiar descripciones de bebidas por eslóganes culturales
+    function asignarEslogan(receta) {
+        const n = receta.nombre.toLowerCase();
+        
+        if (n.includes("mazapán") || n.includes("mazapan")) {
+            receta.descripcion = "El dulce abrazo del cacahuate en una bebida cálida y reconfortante.";
+        } else if (n.includes("galleta")) {
+            receta.descripcion = "Un viaje a la infancia con el sabor nostálgico de la vainilla y la canela.";
+        } else if (n.includes("champurrado")) {
+            receta.descripcion = "El elixir prehispánico que reconforta el alma con su espeso sabor a cacao.";
+        } else if (n.includes("arroz con leche")) {
+            receta.descripcion = "Dulzura clásica y cremosa que evoca las tardes familiares.";
+        } else {
+            // Por si acaso, limpiamos rastros de días en otros platillos
+            receta.descripcion = receta.descripcion
+                .replace(/Disponible los \w+\.?\s?/gi, '')
+                .replace(/Especial de los \w+\.?\s?/gi, '')
+                .replace(/La estrella de los \w+\.?\s?/gi, '');
+        }
+        return receta;
     }
 
     async function cargar() {
@@ -144,19 +170,24 @@
             const res = await fetch(API_URL);
             let rawData = await res.json();
             
-            // Ordenar los datos por ID para que salgan en el orden correcto siempre
+            // Ordenar los datos por ID
             apiData = rawData.sort((a, b) => a.id - b.id);
             
             const grid = document.getElementById('grid-recetas');
             
-            grid.innerHTML = apiData.map(r => `
-                <div class="card" onclick="abrirReceta(${r.id})">
-                    <small style="color:var(--verde); font-weight:bold; text-transform:uppercase;">${r.categoria}</small>
-                    <h2>${r.nombre}</h2>
-                    <p>${r.descripcion}</p>
+            grid.innerHTML = apiData.map(r => {
+                // Aplicamos el filtro de eslóganes justo antes de dibujar la tarjeta
+                const recetaLimpia = asignarEslogan(r);
+                
+                return `
+                <div class="card" onclick="abrirReceta(${recetaLimpia.id})">
+                    <small style="color:var(--verde); font-weight:bold; text-transform:uppercase;">${recetaLimpia.categoria}</small>
+                    <h2>${recetaLimpia.nombre}</h2>
+                    <p>${recetaLimpia.descripcion}</p>
                     <b style="color:var(--rojo)">Ver Elaboración Completa →</b>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         } catch (error) {
             console.error("Error al cargar recetas:", error);
         }
