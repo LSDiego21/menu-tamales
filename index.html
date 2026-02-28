@@ -1,45 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recetario Maestro | Los Padrinos & El Rey</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gran Recetario Mexicano</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="main-content">
-        <header class="hero">
-            <div class="hero-overlay">
-                <span class="location">Cancún, México</span>
-                <h1>El Gran Recetario</h1>
-                <p>Tamales Los Padrinos & Caldos de Pavo El Rey</p>
-            </div>
-        </header>
+    <div class="overlay-background"></div>
+    
+    <header class="main-header">
+        <h1>RECETARIO MEXICANO</h1>
+        <p>Descubre el arte de la cocina tradicional</p>
+    </header>
 
-        <section class="shelf">
-            <div id="grid" class="recipe-grid"></div>
-        </section>
+    <main id="galeria" class="recipe-container"></main>
 
-        <div id="recipe-modal" class="modal">
-            <div class="modal-parchment">
-                <span class="close-btn">&times;</span>
-                <h2 id="modal-title"></h2>
-                <div class="content-flex">
-                    <div class="ing-list">
-                        <h3>Ingredientes</h3><ul id="modal-ingredients"></ul>
-                    </div>
-                    <div class="step-list">
-                        <h3>Preparación</h3><ol id="modal-steps"></ol>
-                    </div>
+    <div id="recipe-modal" class="modal-backdrop">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-scroll-area">
+                <h2 id="modal-name"></h2>
+                <div class="recipe-details">
+                    <section>
+                        <h3>Ingredientes</h3>
+                        <ul id="modal-ingredients"></ul>
+                    </section>
+                    <section>
+                        <h3>Pasos de Elaboración</h3>
+                        <ol id="modal-steps"></ol>
+                    </section>
                 </div>
             </div>
         </div>
-
-        <footer class="footer">
-            <p>Ubicados sobre la Av. Talleres con Torcasita, frente a la gasolinera Oktan.</p>
-            <div class="api-footer">API: <span>https://lsdiego2108.pythonanywhere.com/api/recetas</span></div>
-        </footer>
     </div>
+
+    <footer class="main-footer">
+        <p>API: <strong>https://lsdiego2108.pythonanywhere.com/api/recetas</strong></p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>

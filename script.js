@@ -1,27 +1,38 @@
-const URL = 'https://lsdiego2108.pythonanywhere.com/api/recetas';
-let data = [];
+const URL_RECETAS = 'https://lsdiego2108.pythonanywhere.com/api/recetas';
+let datosRecetas = [];
 
-async function load() {
-    const res = await fetch(URL);
-    data = await res.json();
-    const grid = document.getElementById('grid');
-    grid.innerHTML = data.map(r => `
-        <div class="card" onclick="openModal(${r.id})">
-            <small>${r.categoria}</small>
+async function obtenerRecetas() {
+    const res = await fetch(URL_RECETAS);
+    datosRecetas = await res.json();
+    const contenedor = document.getElementById('galeria');
+    
+    contenedor.innerHTML = datosRecetas.map(r => `
+        <div class="card" onclick="mostrarReceta(${r.id})">
+            <span style="font-size: 0.8em; color: #f1c40f;">${r.categoria}</span>
             <h2>${r.nombre}</h2>
             <p>${r.descripcion}</p>
         </div>
     `).join('');
 }
 
-function openModal(id) {
-    const r = data.find(x => x.id === id);
-    document.getElementById('modal-title').innerText = r.nombre;
+function mostrarReceta(id) {
+    const r = datosRecetas.find(x => x.id === id);
+    document.getElementById('modal-name').innerText = r.nombre;
     document.getElementById('modal-ingredients').innerHTML = r.ingredientes.map(i => `<li>${i}</li>`).join('');
     document.getElementById('modal-steps').innerHTML = r.pasos.map(p => `<li>${p}</li>`).join('');
-    document.getElementById('recipe-modal').style.display = 'block';
+    
+    // Muestra el recuadro emergente
+    document.getElementById('recipe-modal').style.display = 'flex';
 }
 
-document.querySelector('.close-btn').onclick = () => document.getElementById('recipe-modal').style.display = 'none';
-window.onclick = (e) => { if(e.target == document.getElementById('recipe-modal')) document.getElementById('recipe-modal').style.display = 'none'; }
-load();
+document.querySelector('.close-modal').onclick = () => {
+    document.getElementById('recipe-modal').style.display = 'none';
+};
+
+window.onclick = (e) => {
+    if(e.target == document.getElementById('recipe-modal')) {
+        document.getElementById('recipe-modal').style.display = 'none';
+    }
+};
+
+obtenerRecetas();
